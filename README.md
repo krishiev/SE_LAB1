@@ -14,30 +14,35 @@
 
 ## 2. UML Use-Case Diagram
 
-```mermaid
-left-to-right direction
-actor SysAdmin
-actor "Security Officer" as SecOfficer
-actor System
+flowchart LR
+    %% Actors
+    subgraph Actors
+        SysAdmin["SysAdmin"]
+        SecOfficer["Security Officer"]
+        System["System"]
+    end
 
-rectangle "Domain & SSL Expiry Alert System" {
-    usecase "Authenticate User" as UC_Auth
-    usecase "Manage Monitored Assets" as UC_Manage
-    usecase "Audit Scan Results" as UC_Audit
-    usecase "Receive Expiry Alerts" as UC_Receive
-    usecase "Escalate Alert" as UC_Escalate
-    usecase "Perform TLS & WHOIS Scan" as UC_Scan
-}
+    %% System Boundary
+    subgraph "Domain & SSL Expiry Alert System"
+        UC_Auth(["Authenticate User"])
+        UC_Manage(["Manage Monitored Assets"])
+        UC_Audit(["Audit Scan Results"])
+        UC_Receive(["Receive Expiry Alerts"])
+        UC_Escalate(["Escalate Alert"])
+        UC_Scan(["Perform TLS & WHOIS Scan"])
+    end
 
-SysAdmin --> UC_Manage
-SysAdmin --> UC_Audit
-SysAdmin --> UC_Receive
+    %% Actor to Use Case Connections
+    SysAdmin --> UC_Manage
+    SysAdmin --> UC_Audit
+    SysAdmin --> UC_Receive
 
-SecOfficer --> UC_Audit
+    SecOfficer --> UC_Audit
 
-System --> UC_Scan
-System --> UC_Escalate
+    System --> UC_Scan
+    System --> UC_Escalate
 
-UC_Manage .> UC_Auth : <<include>>
-UC_Audit .> UC_Auth : <<include>>
-UC_Receive <. UC_Escalate : <<extend>>
+    %% Include and Extend Relationships
+    UC_Manage -.->|«include»| UC_Auth
+    UC_Audit -.->|«include»| UC_Auth
+    UC_Escalate -.->|«extend»| UC_Receive
