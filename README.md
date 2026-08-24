@@ -14,6 +14,7 @@
 
 ## 2. UML Use-Case Diagram
 
+```mermaid
 flowchart LR
     %% Actors
     subgraph Actors
@@ -46,3 +47,4 @@ flowchart LR
     UC_Manage -.->|«include»| UC_Auth
     UC_Audit -.->|«include»| UC_Auth
     UC_Escalate -.->|«extend»| UC_Receive
+```
